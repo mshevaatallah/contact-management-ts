@@ -57,6 +57,7 @@ export class UserController {
   }
   static async logout(req: UserRequest, res: Response, next: NextFunction) {
     try {
+      await UserService.logout(req.user!);
       res.status(200).json({
         message: "logout data user successfully",
         data: "OK",

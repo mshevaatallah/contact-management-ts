@@ -87,6 +87,9 @@ describe("Delete /api/users/current", () => {
       .set("X-API-TOKEN", "test");
     logger.debug(response.body);
     expect(response.status).toBe(200);
+
+    const user = await UserTest.get();
+    expect(user.token).toBeNull();
   });
   it("should be invalid to delete user", async () => {
     const response = await supertest(web)
