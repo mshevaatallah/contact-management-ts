@@ -73,3 +73,26 @@ describe("GET /api/users/current", () => {
     expect(response.status).toBe(401);
   });
 });
+
+describe("Delete /api/users/current", () => {
+  beforeEach(async () => {
+    await UserTest.create();
+  });
+  afterEach(async () => {
+    await UserTest.delete();
+  });
+  it("should be able to delete user", async () => {
+    const response = await supertest(web)
+      .delete("/api/users/current")
+      .set("X-API-TOKEN", "test");
+    logger.debug(response.body);
+    expect(response.status).toBe(200);
+  });
+  it("should be invalid to delete user", async () => {
+    const response = await supertest(web)
+      .delete("/api/users/current")
+      .set("X-API-TOKEN", "salah");
+    logger.debug(response.body);
+    expect(response.status).toBe(401);
+  });
+});
