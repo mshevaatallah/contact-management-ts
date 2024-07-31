@@ -45,4 +45,29 @@ export class ContactTest {
       },
     });
   }
+
+  static async create() {
+    await prismaClient.contact.create({
+      data: {
+        firstName: "test",
+        lastName: "test",
+        email: "shev@mail.com",
+        phone: "01021210210212",
+        username: "test",
+      },
+    });
+  }
+  static async get() {
+    const contact = await prismaClient.contact.findFirst({
+      where: {
+        username: "test",
+      },
+    });
+
+    if (!contact) {
+      throw new Error("Contact is not found");
+    }
+
+    return contact;
+  }
 }

@@ -28,3 +28,25 @@ describe("POST /api/contact", () => {
     expect(response.body.data.lastName).toBe("test");
   });
 });
+
+describe("GET /api/contact/:contactId", () => {
+  beforeEach(async () => {
+    await UserTest.create();
+    await ContactTest.create();
+  });
+
+  afterEach(async () => {
+    await ContactTest.deleteAll();
+    await UserTest.delete();
+  });
+  it("should get a contact ", async () => {
+    const contact = await ContactTest.get();
+    const response = await supertest(web)
+      .get(`/api/contacts/${contact.id}`)
+      .set("X-API-TOKEN", "test");
+    logger.debug(response.body);
+    expect(response.status).toBe(200);
+    expect(response.body.data.id).toBeDefined();
+    expect(response.body.data.firstName).toBe(contact.firstName);
+  });
+});
