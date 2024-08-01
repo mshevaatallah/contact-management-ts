@@ -14,6 +14,13 @@ export type CreateContactRequest = {
   email?: string;
   phone?: string;
 };
+export type UpdateContactRequest = {
+  id: number;
+  firstName: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+};
 
 export function toContactResponse(contact: Contact): ContactResponse {
   return {
