@@ -76,3 +76,23 @@ describe("PUT /api/contact/:contactId", () => {
     expect(response.status).toBe(200);
   });
 });
+
+describe("DELETE /api/contact/:contactId", () => {
+  beforeEach(async () => {
+    await UserTest.create();
+    await ContactTest.create();
+  });
+
+  afterEach(async () => {
+    await ContactTest.deleteAll();
+    await UserTest.delete();
+  });
+  it("should delete a contact ", async () => {
+    const contact = await ContactTest.get();
+    const response = await supertest(web)
+      .delete(`/api/contacts/${contact.id}`)
+      .set("X-API-TOKEN", "test");
+    logger.debug(response.body);
+    expect(response.status).toBe(200);
+  });
+});

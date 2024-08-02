@@ -9,7 +9,6 @@ import { ContactValidation } from "../validation/contact-validation";
 import { Validation } from "../validation/validation";
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
-import { UserValidation } from "../validation/user-validation";
 
 export class ContactService {
   static async create(
@@ -72,6 +71,18 @@ export class ContactService {
         username: user.username,
       },
       data: updateRequest,
+    });
+
+    return toContactResponse(contact);
+  }
+
+  static async remove(user: User, id: number): Promise<ContactResponse> {
+    await this.checkContactMustExist(user.username, id);
+    const contact = await prismaClient.contact.delete({
+      where: {
+        id: id,
+        username: user.username,
+      },
     });
 
     return toContactResponse(contact);
